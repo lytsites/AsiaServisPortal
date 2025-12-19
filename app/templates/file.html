@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+
+<a class="btn-floating btn-large waves-effect waves-light app-fab-left" href="/" title="Назад">
+  <i class="material-icons">arrow_back</i>
+</a>
+
+<div class="row">
+  <div class="col s12">
+    <div class="card app-card">
+      <div class="card-content">
+        <span class="card-title">Файл</span>
+
+        <div class="app-file-name">
+          <i class="material-icons">picture_as_pdf</i>
+          <span>{{ meta.name }}</span>
+        </div>
+
+        {% if not available %}
+          <div class="app-warning" style="margin-top:12px;">
+            <i class="material-icons">warning</i>
+            <span>Временный файл уже удалён (истёк TTL / перезапуск / очистка).</span>
+          </div>
+        {% elif parsed %}
+          <div class="app-meta-row">
+            <div class="app-meta-left"><b>Регион:</b> {{ parsed.region }}</div>
+            <div class="app-meta-right"><b>Дата отчета:</b> {{ parsed.report_date }}</div>
+          </div>
+
+          <div style="margin-top:10px;">
+            <b>Период по отчету:</b> {{ parsed.period }}
+          </div>
+
+          <div style="margin-top:16px;">
+            <table class="highlight responsive-table">
+              <thead>
+                <tr>
+                  <th class="js-sort" data-key="iin_bin">ИИН/БИН налогоплательщика</th>
+                  <th class="js-sort" data-key="bank_code">Код банка налогоплательщика</th>
+                  <th class="js-sort" data-key="iik">ИИК</th>
+                  <th class="js-sort" data-key="kbk">КБК</th>
+                  <th class="js-sort" data-key="amount_in">Сумма поступления</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for r in parsed.rows %}
+                <tr class="js-data-row">
+                  <td>{{ r.iin_bin }}</td>
+                  <td>{{ r.bank_code }}</td>
+                  <td>{{ r.iik }}</td>
+                  <td>{{ r.kbk }}</td>
+                  <td>{{ r.amount_in }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

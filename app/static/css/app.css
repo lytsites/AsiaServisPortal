@@ -1,0 +1,347 @@
+:root{
+  --radius: 18px;
+  --radius-sm: 14px;
+  --border: rgba(15, 23, 42, 0.10);
+  --border-strong: rgba(15, 23, 42, 0.14);
+  --shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
+  --shadow-soft: 0 6px 18px rgba(2, 6, 23, 0.06);
+  --text: #0f172a;        /* slate-900 */
+  --muted: #475569;       /* slate-600 */
+  --bg: #f6f8fc;
+  --card: rgba(255,255,255,0.86);
+  --card-solid: #ffffff;
+}
+
+html, body{
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 600; /* шрифт толще по умолчанию */
+}
+
+/* Контейнер */
+.app-container{
+  margin-top: 46px;
+  margin-bottom: 46px;
+}
+
+/* Главные карточки */
+.app-card{
+  border-radius: var(--radius);
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.card-title{
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.grey-text.text-darken-1{
+  color: var(--muted) !important;
+  font-weight: 600;
+}
+
+/* Кнопки/действия */
+.app-actions{
+  display:flex;
+  gap: 14px;
+  margin-top: 18px;
+  align-items:center;
+}
+
+.btn-large{
+  border-radius: 14px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  box-shadow: var(--shadow-soft);
+}
+
+.app-round-btn{
+  border-radius: 999px;
+  width: 56px;
+  height: 56px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Кнопка-навигация слева сверху */
+.app-fab-left{
+  position: fixed;
+  left: 22px;
+  top: 22px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Modal */
+.modal.app-modal{
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--card-solid);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.app-modal .modal-content{
+  padding: 18px 18px 0 18px;
+}
+
+.app-modal-footer{
+  background: #ffffff !important;
+  border-top: 1px solid var(--border);
+}
+
+.app-inner-card{
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.92);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Dropzone */
+.app-dropzone{
+  border: 2px dashed rgba(15, 23, 42, 0.22);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  transition: 0.15s ease;
+  background: rgba(2, 6, 23, 0.02);
+}
+
+.app-dropzone.dragover{
+  border-color: rgba(33, 150, 243, 0.65);
+  background: rgba(33, 150, 243, 0.08);
+}
+
+.app-dropzone-inner{
+  text-align:center;
+}
+
+.app-dropzone i{
+  font-size: 44px;
+  opacity: 0.9;
+}
+
+.app-dropzone-title{
+  font-size: 16px;
+  margin-top: 6px;
+  font-weight: 800;
+}
+
+.app-dropzone-sub{
+  font-size: 13px;
+  margin-top: 2px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.app-dropzone-actions{
+  margin-top: 12px;
+  display:flex;
+  justify-content:center;
+}
+
+/* File list */
+.app-filelist-title{
+  margin-top: 16px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.app-filelist{
+  max-height: 250px;
+  overflow: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.app-filelist .collection-item{
+  background: rgba(255,255,255,0.9);
+  border-color: rgba(15, 23, 42, 0.08);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.app-filelist .collection-item.active{
+  background: rgba(33, 149, 243, 0.215);
+  color: var(--text);
+}
+
+/* Preview */
+.app-preview-card{
+  min-height: 420px;
+}
+
+.app-preview-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.app-preview-title{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  font-weight: 900;
+}
+
+.app-preview-body{
+  height: 360px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: rgba(2, 6, 23, 0.02);
+  position: relative;
+}
+
+.app-preview-empty{
+  height: 100%;
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content:center;
+  color: var(--muted);
+  gap: 6px;
+  font-weight: 700;
+}
+
+.app-preview-empty i{
+  font-size: 44px;
+}
+
+.app-preview-embed{
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* History */
+.app-history-item{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 14px;
+  background: rgba(255,255,255,0.92) !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+  color: var(--text);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow-soft);
+}
+
+.app-history-name{
+  font-weight: 900;
+}
+
+.app-history-meta{
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* File page */
+.app-file-name{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.app-warning{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.10);
+  color: #92400e;
+  font-weight: 700;
+}
+
+/* фикс видимости коллекции */
+.collection{
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.app-filelist{
+  background: rgba(255,255,255,0.92);
+}
+
+.app-filelist .collection-item i.material-icons{
+  color: rgba(15, 23, 42, 0.75);
+  margin-right: 8px;
+}
+
+/* модалка шире и выше */
+.modal.app-modal{
+  width: 92% !important;
+  max-width: 1200px !important;
+}
+
+.modal.app-modal.modal-fixed-footer{
+  height: 86% !important;
+  max-height: 86% !important;
+}
+
+.app-meta-row{
+  display:flex;
+  align-items:flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.92);
+}
+
+.app-meta-left, .app-meta-right{
+  font-weight: 700;
+  color: var(--text);
+}
+
+.app-meta-right{
+  text-align: right;
+  margin-left: auto;
+}
+
+.app-period-row td{
+  font-weight: 900;
+  background: rgba(33, 150, 243, 0.08);
+  border-top: 1px solid rgba(33, 150, 243, 0.22);
+  border-bottom: 1px solid rgba(33, 150, 243, 0.22);
+}
+
+th.js-sort{
+  cursor: pointer;
+  user-select: none;
+}
+
+th.js-sort::after{
+  content: " ⇅";
+  font-size: 12px;
+  opacity: 0.4;
+}
+
+th.js-sort.sort-asc::after{
+  content: " ▲";
+  opacity: 0.8;
+}
+
+th.js-sort.sort-desc::after{
+  content: " ▼";
+  opacity: 0.8;
+}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<a class="btn-floating btn-large waves-effect waves-light app-fab-left" href="/" title="Назад">
+  <i class="material-icons">arrow_back</i>
+</a>
+
+<div class="row">
+  <div class="col s12">
+    <div class="card app-card">
+      <div class="card-content">
+        <span class="card-title">История загрузок</span>
+        <p class="grey-text text-darken-1">Если временный файл уже очищен, он будет отмечен как “истёк”.</p>
+
+        {% if items|length == 0 %}
+          <div class="app-empty-state">
+            <i class="material-icons">history</i>
+            <div>История пуста</div>
+          </div>
+        {% else %}
+          <ul class="collection">
+            {% for it in items %}
+              <li class="collection-item app-history-item">
+                <div class="app-history-main">
+                  <div class="app-history-name">{{ it.name }}</div>
+                  <div class="app-history-meta grey-text text-darken-1">
+                    {{ it.created_at }}
+                    {% if not it.available %}
+                      <span class="new badge grey" data-badge-caption="истёк"></span>
+                    {% else %}
+                      <span class="new badge green" data-badge-caption="доступен"></span>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <div class="app-history-actions">
+                  <a class="btn-small waves-effect" href="/file/{{ it.id }}">
+                    Открыть
+                    <i class="material-icons right">open_in_new</i>
+                  </a>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

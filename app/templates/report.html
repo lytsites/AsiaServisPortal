@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<a class="btn-floating btn-large waves-effect waves-light app-fab-left" href="/" title="Назад">
+  <i class="material-icons">arrow_back</i>
+</a>
+
+<div class="row">
+  <div class="col s12">
+    <div class="card app-card">
+      <div class="card-content">
+        <span class="card-title">Аналитический отчёт</span>
+        <div class="grey-text text-darken-1" style="margin-top:6px;">
+          Файлов (сохранённых): {{ files_count }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading indicator -->
+<div class="row">
+  <div class="col s12">
+    <div id="loading-indicator" class="chart-loading hide">
+      <div class="chart-loading-spinner"></div>
+      <div style="margin-top: 16px; font-weight: 700; color: var(--muted);">Загрузка данных...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Filter Panel -->
+<div class="row">
+  <div class="col s12">
+    <div class="filter-panel">
+      <div class="filter-title">
+        <i class="material-icons">filter_list</i>
+        Фильтрация данных
+      </div>
+      
+      <div class="filter-row">
+        <div class="filter-group">
+          <label class="filter-label">Регион</label>
+          <select id="filter-region" class="filter-select browser-default">
+            <option value="" disabled selected>Загрузка...</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">Период</label>
+          <select id="filter-period" class="filter-select browser-default">
+            <option value="" disabled selected>Загрузка...</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">КБК (опционально)</label>
+          <select id="filter-kbk" class="filter-select browser-default">
+            <option value="" selected>Все КБК</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="filter-actions">
+        <button id="reset-filters" class="btn waves-effect waves-light grey">
+          <i class="material-icons left">refresh</i> Сбросить
+        </button>
+        <button id="apply-filters" class="btn waves-effect waves-light">
+          <i class="material-icons left">check</i> Применить фильтры
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Report Block (disabled until filters applied) -->
+<div id="report-block" class="disabled">
+  
+  <div class="row">
+    <div class="col s12">
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon">
+            <i class="material-icons">payments</i>
+          </div>
+          <div class="kpi-value" id="kpi-total">0 ₸</div>
+          <div class="kpi-label">Поступления за период</div>
+          <div class="kpi-change positive" id="kpi-growth">
+            <i class="material-icons tiny">trending_up</i> +0.0%
+          </div>
+        </div>
+        
+        <div class="kpi-card">
+          <div class="kpi-icon">
+            <i class="material-icons">people</i>
+          </div>
+          <div class="kpi-value" id="kpi-taxpayers">0</div>
+          <div class="kpi-label">Уникальных налогоплательщиков</div>
+          <div class="kpi-change neutral">
+            <i class="material-icons tiny">info</i> по ИИН/БИН
+          </div>
+        </div>
+        
+        <div class="kpi-card">
+          <div class="kpi-icon">
+            <i class="material-icons">leaderboard</i>
+          </div>
+          <div class="kpi-value" id="kpi-top10-share">0%</div>
+          <div class="kpi-label">Доля ТОП-10</div>
+          <div class="kpi-change positive">
+            <i class="material-icons tiny">star</i> в общей сумме
+          </div>
+        </div>
+        
+        <div class="kpi-card">
+          <div class="kpi-icon">
+            <i class="material-icons">calendar_today</i>
+          </div>
+          <div class="kpi-value" id="kpi-period">-</div>
+          <div class="kpi-label">Выбранный период</div>
+          <div class="kpi-change neutral">
+            <i class="material-icons tiny">event</i> YYYY-MM
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Charts Row 1: Line Chart and Bar Chart -->
+  <div class="row">
+    <div class="col s12 m8">
+      <div class="chart-container">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Динамика поступлений по месяцам</div>
+            <div class="chart-subtitle">Линейная диаграмма, ₸</div>
+          </div>
+        </div>
+        <div class="chart-body">
+          <canvas id="line-chart"></canvas>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col s12 m4">
+      <div class="chart-container">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">ТОП-10 налогоплательщиков</div>
+            <div class="chart-subtitle">Горизонтальная диаграмма</div>
+          </div>
+        </div>
+        <div class="chart-body">
+          <canvas id="bar-chart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Charts Row 2: Pie Chart -->
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="chart-container">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Доля ТОП-10 в общей сумме</div>
+            <div class="chart-subtitle">Круговая диаграмма</div>
+          </div>
+        </div>
+        <div class="chart-body">
+          <canvas id="pie-chart"></canvas>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col s12 m6">
+      <div class="chart-container">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Детализация по КБК</div>
+            <div class="chart-subtitle">Распределение поступлений</div>
+          </div>
+        </div>
+        <div class="chart-body">
+          <div id="kbk-details" style="height: 100%; display: flex; align-items: center; justify-content: center; color: var(--muted); font-weight: 600;">
+            Выберите КБК для детализации
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Data Table (optional) -->
+  <div class="row">
+    <div class="col s12">
+      <div class="chart-container">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Детальные данные</div>
+            <div class="chart-subtitle">Отфильтрованные строки</div>
+          </div>
+        </div>
+        <div class="chart-body" style="height: auto; min-height: 200px; max-height: 400px; overflow: auto; padding: 0;">
+          <div style="padding: 16px; border-bottom: 1px solid var(--border);">
+            <div style="font-weight: 700; color: var(--text);" id="data-table-info">
+              Примените фильтры для отображения данных
+            </div>
+          </div>
+          <div style="overflow: auto; max-height: 320px;">
+            <table class="striped highlight">
+              <thead>
+                <tr>
+                  <th class="js-sort" data-key="iin_bin">ИИН/БИН</th>
+                  <th class="js-sort" data-key="bank_code">Код банка</th>
+                  <th class="js-sort" data-key="iik">ИИК</th>
+                  <th class="js-sort" data-key="kbk">КБК</th>
+                  <th class="js-sort" data-key="amount_in">Сумма (₸)</th>
+                </tr>
+              </thead>
+              <tbody id="data-table-body">
+                <tr>
+                  <td colspan="5" class="center-align grey-text">Примените фильтры для отображения данных</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden warning for missing filters -->
+<div class="row">
+  <div class="col s12">
+    <div id="filter-warning" class="card app-card red lighten-5 hide">
+      <div class="card-content red-text text-darken-2">
+        <i class="material-icons left">warning</i>
+        <strong>Внимание:</strong> Для просмотра отчёта необходимо выбрать Регион и Период.
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Custom charts CSS -->
+<link rel="stylesheet" href="/static/css/charts.css">
+
+<!-- Custom charts JS -->
+<script src="/static/js/charts.js"></script>
+
+<script>
+  // Update period display
+  function updatePeriodDisplay() {
+    const periodSelect = document.getElementById('filter-period');
+    const periodDisplay = document.getElementById('kpi-period');
+    if (periodSelect && periodSelect.value) {
+      periodDisplay.textContent = periodSelect.value.split(' - ')[0].slice(6, 10) + '-' +
+                                  periodSelect.value.split(' - ')[0].slice(3, 5);
+    } else {
+      periodDisplay.textContent = '-';
+    }
+  }
+  
+  // Initialize table sorting (compatible with app.js)
+  function initTableSorting() {
+    // The sorting functionality is already included in app.js
+    // It automatically binds to th.js-sort elements
+    // Just ensure the table has the proper structure
+    $('th.js-sort').off('click').on('click', function(e) {
+      e.preventDefault();
+      // Trigger the sorting logic from app.js if available
+      if (typeof window.sortTable === 'function') {
+        window.sortTable($(this));
+      }
+    });
+  }
+  
+  // Listen to period changes
+  $(document).ready(function() {
+    $('#filter-period').on('change', updatePeriodDisplay);
+    
+    // Initialize tooltips
+    $('.tooltipped').tooltip();
+    
+    
+    // Make initTableSorting globally available
+    window.initTableSorting = initTableSorting;
+  });
+</script>
+{% endblock %}

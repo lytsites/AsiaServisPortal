@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row">
+  <div class="col s12">
+    <div class="card app-card">
+      <div class="card-content">
+        <span class="card-title">Dashboard</span>
+        <p class="grey-text text-darken-1">Загрузка PDF с предпросмотром в модальном окне.</p>
+
+        <div class="app-actions">
+          <a class="btn-large waves-effect waves-light modal-trigger" href="#uploadModal">
+            <i class="material-icons left">upload_file</i>
+            Загрузить PDF
+          </a>
+
+          <a class="btn-large app-round-btn waves-effect waves-light white" href="/history" title="История">
+            <i class="material-icons black-text">history</i>
+          </a>
+
+          <a class="btn-large app-round-btn waves-effect waves-light white" href="/report" title="Отчёт">
+            <i class="material-icons black-text">assessment</i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upload Modal -->
+<div id="uploadModal" class="modal modal-fixed-footer app-modal">
+  <div class="modal-content">
+    <div class="app-modal-header">
+      <h5>Загрузка PDF</h5>
+      <p class="grey-text text-darken-1">Можно выбрать через кнопку или перетащить в область.</p>
+    </div>
+
+    <div class="row app-upload-layout">
+      <!-- Left: dropzone + list -->
+      <div class="col s12 m4">
+        <div class="card app-inner-card">
+          <div class="card-content">
+            <div class="app-dropzone" id="dropzone">
+              <div class="app-dropzone-inner">
+                <i class="material-icons">picture_as_pdf</i>
+                <div class="app-dropzone-title">Перетащите PDF сюда</div>
+                <div class="app-dropzone-sub">или кликните по этой области для выбора файла</div>
+                <input type="file" id="fileInput" accept="application/pdf" multiple hidden>
+              </div>
+            </div>
+
+            <div class="app-filelist-title">Выбранные файлы</div>
+            <ul class="collection app-filelist" id="fileList">
+              <li class="collection-item grey-text text-darken-1">Пока нет файлов</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: preview -->
+      <div class="col s12 m8">
+        <div class="card app-inner-card app-preview-card">
+          <div class="card-content">
+            <div class="app-preview-header">
+              <div class="app-preview-title">
+                <i class="material-icons">visibility</i>
+                <span id="previewTitle">Предпросмотр</span>
+              </div>
+              <div class="app-preview-hint grey-text text-darken-1" id="previewHint">
+                Выберите файл слева — он появится здесь.
+              </div>
+            </div>
+
+            <div class="app-preview-body" id="previewBody">
+              <div class="app-preview-empty">
+                <i class="material-icons">description</i>
+                <div>Нет выбранного файла</div>
+              </div>
+            </div>
+
+            <div class="app-status" id="uploadStatus"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-footer app-modal-footer">
+    <a href="#!" class="modal-close btn-flat">Закрыть</a>
+    <a href="#!" class="btn waves-effect waves-light" id="nextBtn">
+      Далее
+      <i class="material-icons right">arrow_forward</i>
+    </a>
+  </div>
+</div>
+
+{% endblock %}
